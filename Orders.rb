@@ -31,14 +31,20 @@ class Orders
     # hash = Hash.new(0)
     # @@ord_list.each{ |x| hash[x.book] += 1}
     # hash.sort_by(&:last).last[0]
-    @@ord_list.inject(Hash.new(0)){|hash, x| hash[x.book] += 1; hash}.sort_by(&:last).last[0]
+   book_count.last[0]
   end
   
   def self.one_of_three
-    books = @@ord_list.inject(Hash.new(0)){|hash, x| hash[x.book] += 1; hash}.sort_by(&:last).reverse.first(3).map{|x|x[0]}
+    books = book_count.reverse.first(3).map{|x|x[0]}
     hash = {}
     @@ord_list.each{|x| hash[x.name] = 0 if books.include? x.book}
     hash.count
+  end
+  
+  private
+  
+  def self.book_count
+    @@ord_list.inject(Hash.new(0)){|hash, x| hash[x.book] += 1; hash}.sort_by(&:last)
   end
 end
 
